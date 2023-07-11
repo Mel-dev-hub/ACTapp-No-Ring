@@ -1,0 +1,30 @@
+{
+  "entries": [
+    {
+      "title": "Title 1",
+      "date": "2023-07-11T02:10:42.098Z",
+      "content": "aisdhaihfaljhfalbc",
+      "id": 1
+    },
+    {
+      "title": "Title 2",
+      "date": "2023-07-11T02:10:51.522Z",
+      "content": "paisdoiwqdfljbfca",
+      "id": 2
+    },
+    {
+      "title": "Title 3",
+      "date": "2023-07-11T02:10:59.841Z",
+      "content": "oaishdoahefljebcdjabc",
+      "id": 3
+    },
+    {
+      "title": "Title 4",
+      "date": "2023-07-11T06:12:26.041Z",
+      "content": "lashdlahdlasjbfdajvb",
+      "id": 4
+    }
+  ],
+  "values": [],
+  "goals": []
+}

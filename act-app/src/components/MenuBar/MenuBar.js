@@ -1,19 +1,21 @@
+import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
 import { Link } from "react-router-dom";
 
 function MenuBar() {
     return (
-        <Nav defaultActiveKey="/" as="ul">
-            <Nav.Item as="li">
-                <Nav.Link as={Link} to="/">Exercises</Nav.Link>
-            </Nav.Item>
-            <Nav.Item as="li">
+        <Navbar bg="light" data-bs-theme="light">
+        <Container>
+            <Navbar.Brand as={Link} to="/">ACT App</Navbar.Brand>
+            <Nav className="me-auto">
+                <Nav.Link as={Link} to="/">Home</Nav.Link>
+                <Nav.Link as={Link} to="/exercises">Exercises</Nav.Link>
                 <Nav.Link as={Link} to="/diary">Diary</Nav.Link>
-            </Nav.Item>
-            <Nav.Item as="li">
                 <Nav.Link as={Link} to="/values">Values</Nav.Link>
-            </Nav.Item>
-        </Nav>
+            </Nav>
+        </Container>
+        </Navbar>
     );
   }
   

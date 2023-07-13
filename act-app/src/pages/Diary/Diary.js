@@ -58,7 +58,7 @@ const  Diary = () => {
 
   const formatTime = (num) => {
     return num < 10 ? `0${num}` : num.toString();
-};
+  };
 
   const formatDate = (rawDate) => {
     const date = new Date(rawDate);
@@ -77,7 +77,7 @@ const  Diary = () => {
         <Col><p>Reflect on situations that made you feel uncomfortable or actions your partook in which do not align with your values, this can help you recognize unfavorable patterns of behaviour and thoughts. You can also keep track of positive steps and attitudes you took towards your values and apreciate your improvement. </p></Col>
       </Row>
       <Row className="mx-2 my-0">
-        <Col><p>New diary entry</p></Col>4
+        <Col><p>New diary entry</p></Col>
       </Row>
       <Row className="mx-2 my-0">
         <Col>

@@ -4,7 +4,7 @@ import {Formik} from "formik";
 import * as Yup from "yup";
 import Row from 'react-bootstrap/Row';
 
-const  DiaryForm = ({handleNewEntry}) => {
+const  NewDiaryForm = ({handleNewEntry}) => {
     const schema = Yup.object().shape({
         title: Yup.string().required("Field is required!"),
         content: Yup.string().required("Field is required!"),
@@ -13,8 +13,9 @@ const  DiaryForm = ({handleNewEntry}) => {
       <div>
           <Formik
                     validationSchema={schema}
-                    onSubmit={(values) => {
+                    onSubmit={(values, {resetForm}) => {
                         handleNewEntry(values.title,values.content);
+                        resetForm({values: ''});
                     }}
                     initialValues={{
                         title: "",
@@ -25,7 +26,7 @@ const  DiaryForm = ({handleNewEntry}) => {
                         handleSubmit,
                         handleChange,                        
                         values,                        
-                        errors,
+                        errors
                     }) => (
                         <Form noValidate onSubmit={handleSubmit}>
                             <Form.Group as={Row} md="3" controlId="titleField">                                
@@ -65,4 +66,4 @@ const  DiaryForm = ({handleNewEntry}) => {
     );
 }
   
-export default DiaryForm;
+export default NewDiaryForm;

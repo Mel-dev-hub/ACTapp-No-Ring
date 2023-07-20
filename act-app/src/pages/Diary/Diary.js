@@ -5,11 +5,9 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Table from 'react-bootstrap/Table';
 import { useState, useEffect } from 'react';
-import DiaryForm from "../../components/DiaryForm/DiaryForm";
+import NewDiaryForm from "../../components/NewDiaryForm/NewDiaryForm";
 import DiaryModal from "../../components/DiaryModal/DiaryModal";
-import {getAllEntries} from "../../api/diaryApi";
-import {addEntry} from "../../api/diaryApi";
-import {getEntry} from "../../api/diaryApi";
+import { getAllEntries, addEntry, deleteEntry, getEntry, updateEntry } from "../../api/diaryApi";
 
 const  Diary = () => {
   const [entries, setEntries] = useState([]);
@@ -19,9 +17,10 @@ const  Diary = () => {
       "title": "",
       "date": new Date(),
       "content": "",
-      "id": 0
+      "id": ""
     },
   ]);
+  const [editMode, setEditMode] = useState(false);
 
   useEffect(() => {
     getEntries();
@@ -29,7 +28,7 @@ const  Diary = () => {
   
   const getEntries = async () => {
     getAllEntries().then(response => {
-      setEntries(response.data);
+      setEntries(response);
     })
   };
 
@@ -37,23 +36,46 @@ const  Diary = () => {
     setisOpen(!isOpen);
   };
 
-  const handleNewEntry = async (title,content) => {
-    const entryObject = {
-      "title": title,
-      "date": new Date(),
-      "content": content
-    }
-    addEntry(entryObject).then(response => {
-        getEntries();
-      });
+  const toggleEditMode = () => {
+    setEditMode(!editMode);
   };
 
-  const handleViewEntry = async (e) => {
-    const entryId = e.target.name;
-    getEntry(entryId).then(response => {
-      setCurrentEntry(response.data);
+  const handleNewEntry = async (title,content) => {
+    addEntry(title,content).then(response => {
+      getEntries();
     });
+  };
+
+  const getEntryInfo = async (entryId) => {
+    getEntry(entryId).then(response => {
+      setCurrentEntry({
+        "title": response.title,
+        "date": response.date,
+        "content": response.content,
+        "id": entryId
+      });
+    });
+  }
+
+  const handleView = async (e) => {
+    const entryId = e.target.name;
+    setEditMode(false);
+    getEntryInfo(entryId);
     toggle();
+  };
+
+  const handleDelete = async (e) => {
+    const entryId = e.target.name;
+    deleteEntry(entryId).then(response => {
+      getEntries();
+    });
+  };
+
+  const handleUpdateEntry = async (id, title,content) => {
+    updateEntry(id, title, content).then(response => {
+      getEntryInfo(id);
+      getEntries();
+    });
   };
 
   const formatTime = (num) => {
@@ -68,7 +90,16 @@ const  Diary = () => {
   return (
     <div>
       <MenuBar/>
-      <DiaryModal isOpen={isOpen} toggle={toggle} title={currentEntry.title} content={currentEntry.content} />
+      <DiaryModal 
+        isOpen={isOpen} 
+        toggle={toggle} 
+        id={currentEntry.id} 
+        title={currentEntry.title} 
+        content={currentEntry.content} 
+        editMode={editMode} 
+        toggleEditMode={toggleEditMode}
+        handleUpdateEntry={handleUpdateEntry} 
+      />
       <Container fluid="md">
       <Row className="mx-2 my-0">
         <Col><p>Diary</p></Col>
@@ -81,7 +112,7 @@ const  Diary = () => {
       </Row>
       <Row className="mx-2 my-0">
         <Col>
-          <DiaryForm handleNewEntry={handleNewEntry}/>
+          <NewDiaryForm handleNewEntry={handleNewEntry}/>
         </Col>
       </Row>
       <Row className="mx-2 my-0">
@@ -96,6 +127,7 @@ const  Diary = () => {
                 <th>Title</th>
                 <th>Date Added</th>
                 <th></th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -105,8 +137,9 @@ const  Diary = () => {
                   <tr key={entry.id}>
                     <td>{entry.id}</td>
                     <td>{entry.title}</td>
-                    <td>{formatDate(entry.date)}</td>
-                    <td><Button name={entry.id} variant="primary" onClick={(handleViewEntry)}>View</Button></td>
+                    <td>--</td>
+                    <td><Button name={entry.id} variant="primary" onClick={(handleView)}>View</Button></td>
+                    <td><Button name={entry.id} variant="danger" onClick={(handleDelete)}>Delete</Button></td>
                   </tr>
                 );
               })

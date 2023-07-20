@@ -8,12 +8,12 @@ import Values from './pages/Values/Values';
 function App() {
   return (
     <div className="App">
-        <Routes>
-            <Route exact path='/' element={< Home />}></Route>
-            <Route exact path='/exercises' element={< Exercises />}></Route>
-            <Route exact path='/diary' element={< Diary />}></Route>
-            <Route exact path='/values' element={< Values />}></Route>
-        </Routes>
+      <Routes>
+          <Route exact path='/' element={< Home />}></Route>
+          <Route exact path='/exercises' element={< Exercises />}></Route>
+          <Route exact path='/diary' element={< Diary />}></Route>
+          <Route exact path='/values' element={< Values />}></Route>
+      </Routes>
     </div>
   );
 }

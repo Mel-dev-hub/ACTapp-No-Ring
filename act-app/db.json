@@ -1,4 +1,10 @@
 {
+  "users": [
+    {
+      "username": "Naruto",
+      "email": "chezhire.cat@gmail.com"
+    }
+  ],
   "entries": [
     {
       "title": "Title 1",
@@ -23,6 +29,12 @@
       "date": "2023-07-11T06:12:26.041Z",
       "content": "lashdlahdlasjbfdajvb",
       "id": 4
+    },
+    {
+      "title": "Title 5",
+      "date": "2023-07-13T19:22:07.083Z",
+      "content": "Today I saw a turtle",
+      "id": 5
     }
   ],
   "values": [],

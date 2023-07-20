@@ -7,65 +7,84 @@ import {useState} from 'react';
 
 const  MoodmetricInteractionButtons = () => {
     const {setMmLevel} = useContext(MMContext);
-    const [myCharacteristic, setMyCharacteristic] = useState();
+    const {setStatus} = useContext(MMContext);
+    const {setStatusBits} = useContext(MMContext);
+    const [streamingCharacteristic, setStreamingCharacteristic] = useState();
 
-    const startDataReception = (e) => {
-    
+    const startReceivingData = async () => {
         let serviceUuid = "dd499b70-e4cd-4988-a923-a7aab7283f8e";
-        let characteristicUuid = "a0956420-9bd2-11e4-bd06-0800200c9a66";
-    
-        console.log('Requesting Bluetooth Device...');
-        navigator.bluetooth.requestDevice({filters: [{services: [serviceUuid]}]})
-        .then(device => {
+        let streamingCharacteristicUuid = "a0956420-9bd2-11e4-bd06-0800200c9a66";
+        try{
+            console.log('Requesting Bluetooth Device...');
+            setStatus('Requesting Bluetooth Device...');
+            const device = await navigator.bluetooth.requestDevice({filters: [{services: [serviceUuid]}]});
+
             console.log('Connecting to GATT Server...');
-            return device.gatt.connect();
-        })
-        .then(server => {
+            setStatus('Connecting...');
+            const server = await device.gatt.connect();
+
             console.log('Getting Service...');
-            return server.getPrimaryService(serviceUuid);
-        })
-        .then(service => {
-            console.log('Getting Characteristic...');
-            return service.getCharacteristic(characteristicUuid);
-        })
-        .then(characteristic => {
-            setMyCharacteristic(characteristic);
-            return myCharacteristic.startNotifications().then(_ => {
+            const service = await server.getPrimaryService(serviceUuid);
+
+            console.log('Getting Streaming Characteristic...');
+            setStatus('Obtaining data stream...');
+            setStreamingCharacteristic(await service.getCharacteristic(streamingCharacteristicUuid));
+
+            await streamingCharacteristic.startNotifications();
             console.log('> Notifications started');
-            myCharacteristic.addEventListener('characteristicvaluechanged',
-                handleNotifications);
-            });
-        })
-        .catch(error => {
+            
+            streamingCharacteristic.addEventListener('characteristicvaluechanged', handleStreamingCharNotif);
+            
+            console.log('Event listeners ready');
+            setStatus('Connected');
+        }catch(error) {
             console.log('Argh! ' + error);
-        });
-    
-    };
-    
-    const stopDataReception = (e) => {
-        if (myCharacteristic) {
-          myCharacteristic.stopNotifications()
-          .then(_ => {
-            console.log('> Notifications stopped');
-            myCharacteristic.removeEventListener('characteristicvaluechanged',
-                handleNotifications);
-          })
-          .catch(error => {
-            console.log('Argh! ' + error);
-          });
+            setStatus('Connection failed');
         }
     };
     
-    function handleNotifications(event) {
+    const stopReceivingData = async () => {
+        if (streamingCharacteristic) {
+          try{
+            await streamingCharacteristic.stopNotifications();
+            streamingCharacteristic.removeEventListener('characteristicvaluechanged', handleStreamingCharNotif);
+            console.log('> Streaming Characteristic Notifications stopped');
+            setMmLevel(0);
+            setStatusBits(0);
+            setStatus('Not connected');
+          }catch(error) {
+            console.log('Argh! ' + error);
+        }
+        }
+    };
+    
+    function handleStreamingCharNotif(event) {
         let value = event.target.value;
-        setMmLevel(value.getUint8(1));
+        const sb = value.getUint8(0) & 0xff; 
+        const mm = value.getUint8(1) & 0xff;
+        setStatusBits(sb);
+        setMmLevel(mm);
+        if(sb!==2 && sb!==3 && sb!==10){
+            console.log('Value: '+ value);
+            console.log('Status bits: '+ sb + ' '+formatDate(new Date()));
+        }
     }
+
+    const formatTime = (num) => {
+        return num < 10 ? `0${num}` : num.toString();
+    };
+
+    const formatDate = (rawDate) => {
+        const date = new Date(rawDate);
+        return `${formatTime(date.getDate())}.${formatTime(date.getMonth() + 1)}.${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+      };
 
     return (
         <div>
             <Row>        
-                <Col><Button size="lg" variant="primary" onClick={(startDataReception)}>Start</Button></Col>
-                <Col><Button size="lg" variant="primary" onClick={(stopDataReception)}>Stop</Button></Col>
+                {/* TODO: Turn these into just on button (on or off) */}
+                <Col><Button size="lg" variant="primary" onClick={(startReceivingData)}>Start</Button></Col>
+                <Col><Button size="lg" variant="primary" onClick={(stopReceivingData)}>Stop</Button></Col>
             </Row>
         </div>
     );

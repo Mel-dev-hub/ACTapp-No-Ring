@@ -1,15 +1,30 @@
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Button from 'react-bootstrap/Button';
 import { useContext } from "react";
-import {MMContext} from "../../context/MMContext";
-import {useState} from 'react';
+import { MMContext } from "../../context/MMContext";
+import { useState } from 'react';
+import Button from 'react-bootstrap/Button';
 
 const  MoodmetricInteractionButtons = () => {
     const {setMmLevel} = useContext(MMContext);
     const {setStatus} = useContext(MMContext);
     const {setStatusBits} = useContext(MMContext);
+    const [activated, setActivated] = useState(false);
+    const [isLoading, setLoading] = useState(false);
     const [streamingCharacteristic, setStreamingCharacteristic] = useState();
+
+    const handleClick = () => {
+        setLoading(true);
+        setActivated(!activated);
+        if(!activated){
+            console.log("start");
+            startReceivingData();
+        }
+        else{
+            console.log("staph");
+            stopReceivingData();
+        }
+    }
 
     const startReceivingData = async () => {
         let serviceUuid = "dd499b70-e4cd-4988-a923-a7aab7283f8e";
@@ -37,8 +52,11 @@ const  MoodmetricInteractionButtons = () => {
             
             console.log('Event listeners ready');
             setStatus('Connected');
+            setLoading(false);
         }catch(error) {
             console.log('Argh! ' + error);
+            setLoading(false);
+            setActivated(false);
             setStatus('Connection failed');
         }
     };
@@ -52,7 +70,10 @@ const  MoodmetricInteractionButtons = () => {
             setMmLevel(0);
             setStatusBits(0);
             setStatus('Not connected');
+            setLoading(false);
           }catch(error) {
+            setLoading(false);
+            setActivated(false);
             console.log('Argh! ' + error);
         }
         }
@@ -79,12 +100,34 @@ const  MoodmetricInteractionButtons = () => {
         return `${formatTime(date.getDate())}.${formatTime(date.getMonth() + 1)}.${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
       };
 
+      const getButtonLabel = () => {
+        if(isLoading){
+            return "Loading...";
+        }
+        else{
+            if(activated){
+                return "Turn off";
+            }
+            else{
+                return "Turn on";
+            }
+        }
+      }
+
     return (
         <div>
             <Row>        
-                {/* TODO: Turn these into just on button (on or off) */}
-                <Col><Button size="lg" variant="primary" onClick={(startReceivingData)}>Start</Button></Col>
-                <Col><Button size="lg" variant="primary" onClick={(stopReceivingData)}>Stop</Button></Col>
+                <Col>
+                <Button
+                variant="primary"
+                disabled={isLoading}
+                onClick={(handleClick)}
+                >
+                {getButtonLabel()}
+                </Button>
+                </Col>
+                {/* <Col><Button size="lg" variant="primary" onClick={(startReceivingData)}>Start</Button></Col> */}
+                {/* <Col><Button size="lg" variant="primary" onClick={(stopReceivingData)}>Stop</Button></Col> */}
             </Row>
         </div>
     );

@@ -39,9 +39,9 @@ const  Home = () => {
                 <Card.Title>MM Level = {mmLevel}</Card.Title>
                 <Card.Text>Current MM level.</Card.Text>
                 <MoodmetricInteractionButtons/>
-                <Row> 
+                {/* <Row> 
                   <Button size="lg" variant="success" onClick={(sendTestPushNotif)}>Send test notif</Button>
-                </Row>
+                </Row> */}
               </Card.Body>
             </Card>
           </Col>

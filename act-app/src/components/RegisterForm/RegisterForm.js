@@ -5,13 +5,17 @@ import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import * as Yup from "yup";
 import { register } from "../../api/auth";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Alert from "react-bootstrap/Alert";
+import { useNavigate } from "react-router-dom";
+import { UserContext } from '../../context/UserContext';
 
-const  RegisterForm = ({onLoginClicked, toggleShowParent, isLoggedIn}) => {
+const  RegisterForm = ({onLoginClicked, toggleShowParent}) => {
 
     const [showAlert, setShowAlert] = useState(false);
     const [alertMessage, setAlertMessage] = useState("");
+    const navigate = useNavigate();
+    const { setUser } = useContext(UserContext);
 
     const schema = Yup.object().shape({
         email: Yup.string().required("Required field."),
@@ -34,8 +38,9 @@ const  RegisterForm = ({onLoginClicked, toggleShowParent, isLoggedIn}) => {
                     onSubmit={(values) => {
                         register(values.email, values.password).then((result) => {
                             if (result.status===200) {
-                                toggleShowParent();
-                                isLoggedIn(true);
+                                setUser(result.user);
+                                navigate("/");
+                                toggleShowParent();                                
                             } 
                             else {
                                 if(result.message) {

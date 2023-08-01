@@ -7,7 +7,8 @@ import Table from 'react-bootstrap/Table';
 import { useState, useEffect } from 'react';
 import NewDiaryForm from "../../components/NewDiaryForm/NewDiaryForm";
 import DiaryModal from "../../components/DiaryModal/DiaryModal";
-import { getAllEntries, addEntry, deleteEntry, getEntry, updateEntry } from "../../api/diaryApi";
+import { getAllUserEntries, addEntry, deleteEntry, getEntry, updateEntry } from "../../api/firestoreApi";
+import { getCurrentUser }  from "../../api/auth";
 
 const  Diary = () => {
   const [entries, setEntries] = useState([]);
@@ -27,9 +28,13 @@ const  Diary = () => {
   }, []);
   
   const getEntries = async () => {
-    getAllEntries().then(response => {
-      setEntries(response);
-    })
+    const user = await getCurrentUser();
+    if(user){
+      const userId = user.uid;
+      await getAllUserEntries(userId).then(response => {
+        setEntries(response);
+      })
+    }
   };
 
   const toggle = () => {
@@ -123,7 +128,7 @@ const  Diary = () => {
           <Table bordered>
             <thead>
               <tr>
-                <th>#</th>
+                <th></th>
                 <th>Title</th>
                 <th>Date Added</th>
                 <th></th>
@@ -132,13 +137,13 @@ const  Diary = () => {
             </thead>
             <tbody>
             {
-              entries.map(entry => {
+              entries.map((entry, index) => {
                 return (
                   <tr key={entry.id}>
-                    <td>{entry.id}</td>
+                    <td>{index+1}</td>
                     <td>{entry.title}</td>
-                    <td>--</td>
-                    <td><Button name={entry.id} variant="primary" onClick={(handleView)}>View</Button></td>
+                    <td>{formatDate(entry.date.toDate())}</td>
+                    <td><Button name={entry.id} variant="primary" onClick={(handleView)}>View/Edit</Button></td>
                     <td><Button name={entry.id} variant="danger" onClick={(handleDelete)}>Delete</Button></td>
                   </tr>
                 );

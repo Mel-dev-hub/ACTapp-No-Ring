@@ -3,7 +3,7 @@ import { useState } from "react";
 import LoginForm from "../LoginForm/LoginForm";
 import RegisterForm from "../RegisterForm/RegisterForm";
 
-const LoginRegisterModal = ({isOpen, toggle, isLoggedIn}) => {
+const LoginRegisterModal = ({isOpen, toggle}) => {
     const [isLoginContent, setIsLoginContent] = useState(true);
 
     const toggleContent = () => {
@@ -14,8 +14,8 @@ const LoginRegisterModal = ({isOpen, toggle, isLoggedIn}) => {
         <Modal show={isOpen} onHide={toggle}>
             {
                 isLoginContent
-                    ? (<LoginForm onRegisterClicked={toggleContent} toggleShowParent={toggle} isLoggedIn={isLoggedIn} />)
-                    : (<RegisterForm onLoginClicked={toggleContent} toggleShowParent={toggle} isLoggedIn={isLoggedIn} />)
+                    ? (<LoginForm onRegisterClicked={toggleContent} toggleShowParent={toggle} />)
+                    : (<RegisterForm onLoginClicked={toggleContent} toggleShowParent={toggle} />)
             }
         </Modal>
     );

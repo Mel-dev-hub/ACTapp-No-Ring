@@ -18,6 +18,7 @@ const  RegisterForm = ({onLoginClicked, toggleShowParent}) => {
     const { setUser } = useContext(UserContext);
 
     const schema = Yup.object().shape({
+        displayName: Yup.string().required("Required field."),
         email: Yup.string().required("Required field."),
         password: Yup.string().required("Required field.")
     });
@@ -36,7 +37,7 @@ const  RegisterForm = ({onLoginClicked, toggleShowParent}) => {
                 <Formik
                     validationSchema={schema}
                     onSubmit={(values) => {
-                        register(values.email, values.password).then((result) => {
+                        register(values.displayName, values.email, values.password).then((result) => {
                             if (result.status===200) {
                                 setUser(result.user);
                                 navigate("/");
@@ -53,6 +54,7 @@ const  RegisterForm = ({onLoginClicked, toggleShowParent}) => {
                         });
                     }}
                     initialValues={{
+                        displayName: "",
                         email: "",
                         password: ""
                     }}
@@ -64,6 +66,20 @@ const  RegisterForm = ({onLoginClicked, toggleShowParent}) => {
                         errors,
                     }) => (
                         <Form noValidate onSubmit={handleSubmit}>
+                            <Form.Group as={Row} md="3" controlId="displayName">
+                                <Form.Label>Username</Form.Label>
+                                <Form.Control
+                                    data-testid="displayName"
+                                    type="text"
+                                    name="displayName"
+                                    value={values.displayName}
+                                    onChange={handleChange}
+                                    isInvalid={!!errors.displayName}
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.displayName}
+                                </Form.Control.Feedback>
+                            </Form.Group>
                             <Form.Group as={Row} md="3" controlId="emailField">
                                 <Form.Label>Email</Form.Label>
                                 <Form.Control

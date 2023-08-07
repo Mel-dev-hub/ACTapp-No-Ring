@@ -1,0 +1,10 @@
+.nav-link{
+    /* font-family: 'Roboto', sans-serif; */
+    color: #000000 !important;
+}
+
+.logout-button{
+    border: none !important;
+    background-color: transparent !important;
+    outline: none !important;
+}

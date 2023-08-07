@@ -7,6 +7,7 @@ import Values from './pages/Values/Values';
 import AcessDenied from './pages/AcessDenied/AccessDenied';
 import { useContext } from 'react';
 import { UserContext } from './context/UserContext';
+import "./css/common.css";
 
 function App() {
   const { user } = useContext(UserContext);

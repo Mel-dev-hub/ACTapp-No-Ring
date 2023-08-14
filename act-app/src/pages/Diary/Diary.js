@@ -9,6 +9,7 @@ import NewDiaryForm from "../../components/NewDiaryForm/NewDiaryForm";
 import DiaryModal from "../../components/DiaryModal/DiaryModal";
 import { getAllUserEntries, addEntry, deleteEntry, getEntry, updateEntry } from "../../api/firestoreApi";
 import { getCurrentUser }  from "../../api/auth";
+import Card from 'react-bootstrap/Card';
 
 const  Diary = () => {
   const [entries, setEntries] = useState([]);
@@ -106,33 +107,35 @@ const  Diary = () => {
         handleUpdateEntry={handleUpdateEntry} 
       />
       <Container fluid="md">
-      <Row className="mx-2 my-0">
-        <Col><p>Diary</p></Col>
+      <Row className="mx-2 mt-5">
+        <Col><h4 className="white-text">My diary</h4></Col>
       </Row>
-      <Row className="mx-2 my-0">
-        <Col><p>Reflect on situations that made you feel uncomfortable or actions your partook in which do not align with your values, this can help you recognize unfavorable patterns of behaviour and thoughts. You can also keep track of positive steps and attitudes you took towards your values and apreciate your improvement. </p></Col>
-      </Row>
-      <Row className="mx-2 my-0">
-        <Col><p>New diary entry</p></Col>
+      <Row className="mx-2 mb-3">
+        <Col><p className="white-text instructions">Reflect on situations that made you feel uncomfortable or actions your partook in which do not align with your values, additionally, you can keep track of positive attitutes or actions. If the system sent you a notification it might be helpful to write down what you were doing or thinking about if you feel it can be relevant. </p></Col>
       </Row>
       <Row className="mx-2 my-0">
         <Col>
-          <NewDiaryForm handleNewEntry={handleNewEntry}/>
+          <Card>                     
+            <Card.Body>
+              <Card.Title className="align-left">Add diary entry</Card.Title>   
+              <NewDiaryForm handleNewEntry={handleNewEntry}/>
+            </Card.Body>
+          </Card>
         </Col>
       </Row>
-      <Row className="mx-2 my-0">
-        <Col><p>All entries</p></Col>
+      <Row className="mx-2 mt-5">
+        <Col><h5 className="align-left white-text">All diary entries</h5></Col>
       </Row>
-      <Row className="mx-2 my-3">
+      <Row className="mx-2 mb-3">
         <Col>
           <Table bordered>
             <thead>
               <tr>
-                <th></th>
+                <th>#</th>
                 <th>Title</th>
                 <th>Date Added</th>
-                <th></th>
-                <th></th>
+                <th>View/Edit</th>
+                <th>Delete</th>
               </tr>
             </thead>
             <tbody>

@@ -1,13 +1,42 @@
+:root {
+  --color-blue: rgb(0,118,177);
+  --color-bright-green: rgb(43, 194, 5);
+}
+
+.grey-text{
+  color: grey;
+}
+
+.red-text{
+  color: red;
+}
+
+.green-text{
+  color: var(--color-bright-green);
+}
+
+.italic{
+  font-style: italic;
+}
+
 img {
     display: block;
     margin-left: auto;
     margin-right: auto;
 }
 
-.bg {
-  background-image: url("../../images/simple-background.png");
-  height: 100vh;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
+@media screen and (min-width: 0px) and (max-width: 600px) { 
+  .bg-home {
+    background-image: url("../../images/lower-background.png");
+    height: 100vh;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
   }
+}
+
+@media screen and (min-width: 601px)  { 
+  .bg-home {
+    background: var(--color-blue);
+  }
+}

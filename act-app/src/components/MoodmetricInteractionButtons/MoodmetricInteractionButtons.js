@@ -1,5 +1,3 @@
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 
 const  MoodmetricInteractionButtons = ({isLoading, activated, handleClick}) => {
@@ -20,17 +18,14 @@ const  MoodmetricInteractionButtons = ({isLoading, activated, handleClick}) => {
 
     return (
         <div>
-            <Row>        
-                <Col>
-                <Button
+            <Button
                 variant="primary"
+                size="lg"
                 disabled={isLoading}
                 onClick={(handleClick)}
                 >
                 {getButtonLabel()}
-                </Button>
-                </Col>
-            </Row>
+            </Button>  
         </div>
     );
 }

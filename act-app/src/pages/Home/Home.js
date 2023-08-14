@@ -48,7 +48,7 @@ const  Home = () => {
             setStreamingCharacteristic(await service.getCharacteristic(streamingCharacteristicUuid));
             await streamingCharacteristic.startNotifications();
             streamingCharacteristic.addEventListener('characteristicvaluechanged', handleStreamingCharNotif);
-            setStatus('Connected');
+            setStatus('Ring connected');
             setLoading(false);
         }catch(error) {
             console.log('Argh! ' + error);
@@ -119,31 +119,44 @@ const  Home = () => {
       
     }
 
+    const getStatus = () => {
+      switch (status) {
+        case 'Not connected':
+          return <div className="grey-text italic">{status}</div>
+        case 'Ring connected':
+          return <div className="italic">{status}</div>
+        case 'Connection failed':
+          return <div className="red-text italic">{status}</div>
+        default:
+          return <div className="italic">{status}</div>
+      }
+    }
+
     return (
-      <div className="bg">
+      <div className="bg-home">
         <MenuBar/>
         <Container fluid="md">
         <Row className="mx-2 mt-5 mb-1">
           <Col><h4 className="white-text">MM level</h4></Col>
         </Row>
-        <Row className="mx-5 my-0">
-          <Col>
+        <Row className="mx-5 my-0 justify-content-center">
+          <Col class="col-xl-6 col-lg-6 col-md-8 col-sm-12 col-12">
             <Card>              
               <Card.Body>
                 <Row>
-                <Col><Card.Img style={{ width: '180px' }} variant="top" src={ringIcon} /></Col>
+                  <Col><Card.Img style={{ width: '180px' }} variant="top" src={ringIcon} /></Col>
                 </Row>
                 <Row>
-                <Col>Status: {status}</Col>
+                  <Col>{getStatus()}</Col>
                 </Row>
                 <Row>
-                <Col><h2>{mmLevel}</h2></Col>
+                  <Col><h1>{mmLevel}</h1></Col>
                 </Row>
                 <Row>
-                <Col className="mb-5">Current MM level.</Col>
+                  <Col className="mb-3">MM level</Col>
                 </Row>
                 <Row>
-                <Col><MoodmetricInteractionButtons isLoading={isLoading} activated={activated} handleClick={handleClick} /></Col>
+                  <Col class="col-12"><MoodmetricInteractionButtons isLoading={isLoading} activated={activated} handleClick={handleClick} /></Col>
                 </Row>
               </Card.Body>
             </Card>

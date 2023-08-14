@@ -2,14 +2,15 @@
     --color-green: rgb(4,139,24);
     --color-dark-green: rgb(0,122,44);
     --color-light-green: rgb(130,198,59);
-  }
+    --color-blue: rgb(0,118,177);
+}
 
 .btn-primary {
     background-color: var(--color-green) !important;
     border-color: var(--color-dark-green) !important;
 }
 
-.btn-primary:hover, .btn-primary:focus, .btn-primary:active  {
+.btn-primary:hover  {
     background-color: var(--color-light-green) !important;
     border-color: var(--color-green) !important;
 }
@@ -19,7 +20,7 @@
 }
 
 .btn-link:hover {
-    color: rgb(130,198,59) !important;
+    color: var(--color-light-green) !important;
 }
 
 div{
@@ -28,4 +29,16 @@ div{
 
 .white-text{
     color: whitesmoke;
+}
+
+.instructions{
+    font-style: italic;
+}
+
+.align-left{
+    text-align: left;
+}
+
+html, body{
+    background: var(--color-blue) !important;
 }

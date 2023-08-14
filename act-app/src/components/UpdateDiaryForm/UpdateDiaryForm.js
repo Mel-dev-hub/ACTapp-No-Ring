@@ -29,7 +29,7 @@ const  UpdateDiaryForm = ({entryId, updateEntry, title, content, toggleEditMode}
                         errors
                     }) => (
                         <Form noValidate onSubmit={handleSubmit}>
-                            <Form.Group as={Row} md="3" controlId="titleField">                                
+                            <Form.Group as={Row} md="3" controlId="titleField" className="mb-2">                                
                                 <Form.Control                                    
                                     type="text"                                    
                                     name="title"

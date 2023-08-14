@@ -9,6 +9,7 @@ import NewValueForm from "../../components/NewValueForm/NewValueForm";
 import ValueModal from "../../components/ValueModal/ValueModal";
 import { getAllUserValues, addValue, deleteValue, getValue, updateValue } from "../../api/firestoreApi";
 import { getCurrentUser }  from "../../api/auth";
+import Card from 'react-bootstrap/Card';
 
 function Values() {
 
@@ -107,33 +108,35 @@ function Values() {
         handleUpdateValue={handleUpdateValue} 
       />
       <Container fluid="md">
-      <Row className="mx-2 my-0">
-        <Col><p>Values</p></Col>
+      <Row className="mx-2 mt-5">
+        <Col><h4 className="white-text">My values</h4></Col>
       </Row>
-      <Row className="mx-2 my-0">
-        <Col><p>Use this section for listing life values that are important to you and would make your life more meaningful as well as actionable steps you can take towards them. If you need time to think, you can leave the second field blank and come back to it later by editing the value in the table below.</p></Col>
-      </Row>
-      <Row className="mx-2 my-0">
-        <Col><p>New value</p></Col>
+      <Row className="mx-2 mb-3">
+        <Col><p className="white-text instructions">Use this section for listing life values that are important to you and would make your life more meaningful as well as actionable steps you can take towards them. If you need time to think, you can leave the second field blank and come back to it later by editing the value in the table below.</p></Col>
       </Row>
       <Row className="mx-2 my-0">
         <Col>
-          <NewValueForm handleNewValue={handleNewValue}/>
+          <Card>                     
+            <Card.Body>
+              <Card.Title className="align-left">Add value</Card.Title>   
+              <NewValueForm handleNewValue={handleNewValue}/>
+            </Card.Body>
+          </Card>
         </Col>
       </Row>
-      <Row className="mx-2 my-0">
-        <Col><p>All values</p></Col>
+      <Row className="mx-2 mt-5">
+        <Col><h5 className="align-left white-text">All values</h5></Col>
       </Row>
-      <Row className="mx-2 my-3">
+      <Row className="mx-2 mb-3">
         <Col>
           <Table bordered>
             <thead>
               <tr>
-                <th></th>
+                <th>#</th>
                 <th>Title</th>
                 <th>Date Added</th>
-                <th></th>
-                <th></th>
+                <th>View/Edit</th>
+                <th>Delete</th>
               </tr>
             </thead>
             <tbody>

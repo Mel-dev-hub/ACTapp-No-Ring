@@ -33,12 +33,12 @@ const  ValueModal = ({isOpen, toggle, id, title, content, editMode, toggleEditMo
   const getButtonLabel = () => {
     if(editMode){
       return(
-        <div>View</div>
+        <div className="white-text">View</div>
       );
     }
     else{
         return(
-          <div>Edit</div>
+          <div className="white-text">Edit</div>
         );
     }
   }

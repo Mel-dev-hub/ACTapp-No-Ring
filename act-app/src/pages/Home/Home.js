@@ -85,7 +85,7 @@ const  Home = () => {
     }
 
     const checkMMLevel = (mmLevel) => {
-      const HIGH_MM_LVL_MIN = 81;
+      const HIGH_MM_LVL_MIN = 61;
       if(mmLevel >= HIGH_MM_LVL_MIN){
         var counter = JSON.parse(localStorage.getItem('counter'))+ 1;
         localStorage.setItem('counter', JSON.stringify(counter));
@@ -137,10 +137,10 @@ const  Home = () => {
         <MenuBar/>
         <Container fluid="md">
         <Row className="mx-2 mt-5 mb-1">
-          <Col><h4 className="white-text">MM level</h4></Col>
+          <Col><h4 className="white-text">Biosignal</h4></Col>
         </Row>
         <Row className="mx-5 my-0 justify-content-center">
-          <Col class="col-xl-6 col-lg-6 col-md-8 col-sm-12 col-12">
+          <Col className="col-xl-6 col-lg-6 col-md-8 col-sm-12 col-12">
             <Card>              
               <Card.Body>
                 <Row>
@@ -156,7 +156,7 @@ const  Home = () => {
                   <Col className="mb-3">MM level</Col>
                 </Row>
                 <Row>
-                  <Col class="col-12"><MoodmetricInteractionButtons isLoading={isLoading} activated={activated} handleClick={handleClick} /></Col>
+                  <Col className="col-12"><MoodmetricInteractionButtons isLoading={isLoading} activated={activated} handleClick={handleClick} /></Col>
                 </Row>
               </Card.Body>
             </Card>

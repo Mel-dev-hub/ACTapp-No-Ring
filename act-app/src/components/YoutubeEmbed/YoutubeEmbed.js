@@ -1,21 +1,37 @@
 import React from "react";
 import PropTypes from "prop-types";
 import './YoutubeEmbed.css';
+import YouTube from "react-youtube";
+import { useState } from "react";
+import { addExerciseLog } from "../../api/firestoreApi";
 
-const YoutubeEmbed = ({ embedId }) => (
-  <div className="video-responsive">
-    <iframe
-      width="853"
-      height="480"
-      src={`https://www.youtube.com/embed/${embedId}`}
-      frameBorder="0"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-      allowFullScreen
-      title="Embedded youtube"
-    />
+const YoutubeEmbed = ({ embedId, videoId }) => {
+
+  const [videoStarted, setVideoStarted] = useState(false);
+  
+  const handleOnPlay = (e) => {
+    if(!videoStarted){
+      setVideoStarted(true);
+      addExerciseLog("VIDEO PLAYED", videoId);
+    }
+  };
+
+  const handleOnEnd = (e) => {
+    setVideoStarted(false);
+    addExerciseLog("VIDEO COMPLETED", videoId);
+  };
+
+  return (
+   <div className="video-responsive">
+    <YouTube
+        videoId={embedId}
+        onPlay={(e) => handleOnPlay(e)}
+        onEnd={(e) => handleOnEnd(e)}
+      />
   </div>
 );
 
+}
 YoutubeEmbed.propTypes = {
   embedId: PropTypes.string.isRequired
 };

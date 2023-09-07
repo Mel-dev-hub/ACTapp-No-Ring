@@ -3,6 +3,9 @@ import { getDocs, collection, addDoc, deleteDoc, doc, updateDoc, getDoc, where, 
 
 const diaryCollectionRef = collection(db,"diary");
 const valuesCollectionRef = collection(db,"values");
+const exercisesLogCollectionRef = collection(db,"exercisesLog");
+const diaryLogCollectionRef = collection(db,"diaryLog");
+const valuesLogCollectionRef = collection(db,"valuesLog");
 
 export const getAllUserEntries = async (userId) => {
   try {
@@ -34,6 +37,43 @@ export const getAllUserValues = async (userId) => {
     }
 };
 
+export const addDiaryLog = async (action) => {
+  try {
+      await addDoc(diaryLogCollectionRef, {
+        action: action,
+        date: new Date(),
+        userId: auth?.currentUser?.uid
+      });
+    } catch (err) {
+      console.error(err);
+    }
+};
+
+export const addValuesLog = async (action) => {
+  try {
+      await addDoc(valuesLogCollectionRef, {
+        action: action,
+        date: new Date(),
+        userId: auth?.currentUser?.uid
+      });
+    } catch (err) {
+      console.error(err);
+    }
+};
+
+export const addExerciseLog = async (action, appId) => {
+  try {
+      await addDoc(exercisesLogCollectionRef, {
+        action: action,
+        appId: appId,
+        date: new Date(),
+        userId: auth?.currentUser?.uid
+      });
+    } catch (err) {
+      console.error(err);
+    }
+};
+
 export const addEntry = async (title, content) => {
   try {
       await addDoc(diaryCollectionRef, {
@@ -42,6 +82,7 @@ export const addEntry = async (title, content) => {
         content: content,
         userId: auth?.currentUser?.uid
       });
+      await addDiaryLog("DIARY ENTRY CREATED");
     } catch (err) {
       console.error(err);
     }
@@ -55,6 +96,7 @@ export const addValue = async (title, content) => {
         content: content,
         userId: auth?.currentUser?.uid
       });
+      await addValuesLog("VALUE CREATED");
     } catch (err) {
       console.error(err);
     }
@@ -64,6 +106,7 @@ export const deleteEntry = async (id) => {
   try {
     const entryDoc = doc(db, "diary", id);
     await deleteDoc(entryDoc);
+    await addDiaryLog("DIARY ENTRY DELETED");
   } catch (err) {
     console.error(err);
   }
@@ -73,6 +116,7 @@ export const deleteValue = async (id) => {
   try {
     const entryDoc = doc(db, "values", id);
     await deleteDoc(entryDoc);
+    await addValuesLog("VALUE DELETED");
   } catch (err) {
     console.error(err);
   }
@@ -105,6 +149,7 @@ export const updateEntry = async (id, newTitle, newContent) => {
       title: newTitle,
       content: newContent
     });
+    await addDiaryLog("DIARY ENTRY UPDATED");
   } catch (err) {
     console.error(err);
   }
@@ -117,6 +162,7 @@ export const updateValue = async (id, newTitle, newContent) => {
       title: newTitle,
       content: newContent
     });
+    await addValuesLog("VALUE UPDATED");
   } catch (err) {
     console.error(err);
   }

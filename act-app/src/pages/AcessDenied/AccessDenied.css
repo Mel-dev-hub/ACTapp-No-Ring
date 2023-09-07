@@ -1,7 +1,23 @@
-.bg {
-background-image: url("../../images/forest-background.png");
-height: 100vh;
-background-position: center;
-background-repeat: no-repeat;
-background-size: cover;
+:root {
+    --color-blue: rgb(0,118,177);
+}
+
+@media screen and (min-width: 0px) and (max-width: 600px) { 
+    .bg {
+    background-image: url("../../images/forest-background.png");
+    height: 100vh;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    }
+}
+
+@media screen and (min-width: 601px)  { 
+    .bg {
+        background-image: url("../../images/desktop_background_home.png");
+        height: 100vh;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
 }

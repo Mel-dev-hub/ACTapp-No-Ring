@@ -13,6 +13,7 @@ import { GrLogout} from "react-icons/gr";
 import { AiOutlineHome, AiOutlineStar } from "react-icons/ai";
 import { GoVideo } from "react-icons/go";
 import "./MenuBar.css";
+import logo from "../../images/logo_1000x500.png";
 
 function MenuBar() {
     const [isOpen, setisOpen] = useState(false);
@@ -48,7 +49,7 @@ function MenuBar() {
         <div>
             <Navbar bg="light" data-bs-theme="light">
             <Container className="justify-content-start">
-                <Navbar.Brand as={Link} to="/">ACTapp</Navbar.Brand>
+                <Navbar.Brand as={Link} to="/"><img style={{ width: '90px' }} src={logo} alt="App logo" /></Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse>
                     <Nav className="me-auto">

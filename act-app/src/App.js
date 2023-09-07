@@ -5,16 +5,12 @@ import Exercises from './pages/Exercises/Exercises';
 import Diary from './pages/Diary/Diary';
 import Values from './pages/Values/Values';
 import AcessDenied from './pages/AcessDenied/AccessDenied';
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import { UserContext } from './context/UserContext';
 import "./css/common.css";
 
 function App() {
   const { user } = useContext(UserContext);
-
-  // useEffect(() => {
-  //   console.log("App opened");
-  // }, []);
 
   return (
     <div className="App">

@@ -42,3 +42,7 @@ div{
 html, body{
     background: var(--color-blue) !important;
 }
+
+td {
+    vertical-align: middle;
+  }

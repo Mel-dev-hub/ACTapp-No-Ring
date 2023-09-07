@@ -7,9 +7,11 @@ import Table from 'react-bootstrap/Table';
 import { useState, useEffect } from 'react';
 import NewDiaryForm from "../../components/NewDiaryForm/NewDiaryForm";
 import DiaryModal from "../../components/DiaryModal/DiaryModal";
-import { getAllUserEntries, addEntry, deleteEntry, getEntry, updateEntry } from "../../api/firestoreApi";
+import { getAllUserEntries, addEntry, deleteEntry, getEntry, updateEntry, addDiaryLog } from "../../api/firestoreApi";
 import { getCurrentUser }  from "../../api/auth";
 import Card from 'react-bootstrap/Card';
+import { RiDeleteBin5Line } from "react-icons/ri";
+import { BiEdit } from "react-icons/bi";
 
 const  Diary = () => {
   const [entries, setEntries] = useState([]);
@@ -63,15 +65,14 @@ const  Diary = () => {
     });
   }
 
-  const handleView = async (e) => {
-    const entryId = e.target.name;
+  const handleView = async (entryId) => {
     setEditMode(false);
     getEntryInfo(entryId);
+    addDiaryLog("DIARY ENTRY VIEWED");
     toggle();
   };
 
-  const handleDelete = async (e) => {
-    const entryId = e.target.name;
+  const handleDelete = async (entryId) => {
     deleteEntry(entryId).then(response => {
       getEntries();
     });
@@ -106,12 +107,12 @@ const  Diary = () => {
         toggleEditMode={toggleEditMode}
         handleUpdateEntry={handleUpdateEntry} 
       />
-      <Container fluid="md">
+      <Container fluid="md" className="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12">
       <Row className="mx-2 mt-5">
         <Col><h4 className="white-text">My diary</h4></Col>
       </Row>
       <Row className="mx-2 mb-3">
-        <Col><p className="white-text instructions">Reflect on situations that made you feel uncomfortable or actions your partook in which do not align with your values, additionally, you can keep track of positive attitutes or actions. If the system sent you a notification it might be helpful to write down what you were doing or thinking about if you feel it can be relevant. </p></Col>
+        <Col><p className="white-text instructions">Reflect on situations that made you feel uncomfortable or actions your partook in which do not align with your values, additionally, you can keep track of positive attitutes or actions. If the system sent you a notification it might be helpful to write down what you were doing and/or thinking about in that moment. </p></Col>
       </Row>
       <Row className="mx-2 my-0">
         <Col>
@@ -128,7 +129,7 @@ const  Diary = () => {
       </Row>
       <Row className="mx-2 mb-3">
         <Col>
-          <Table bordered>
+          <Table bordered size="sm">
             <thead>
               <tr>
                 <th>#</th>
@@ -144,10 +145,11 @@ const  Diary = () => {
                 return (
                   <tr key={entry.id}>
                     <td>{index+1}</td>
+                    {/* <td>{entry.id}</td> */}
                     <td>{entry.title}</td>
                     <td>{formatDate(entry.date.toDate())}</td>
-                    <td><Button name={entry.id} variant="primary" onClick={(handleView)}>View/Edit</Button></td>
-                    <td><Button name={entry.id} variant="danger" onClick={(handleDelete)}>Delete</Button></td>
+                    <td><Button id={entry.id} variant="primary"  onClick={() => handleView(entry.id)}><BiEdit color="white" size="25px"/></Button></td>
+                    <td><Button id={entry.id} variant="danger" onClick={() => handleDelete(entry.id)}><RiDeleteBin5Line color="white" size="25px"/></Button></td>
                   </tr>
                 );
               })

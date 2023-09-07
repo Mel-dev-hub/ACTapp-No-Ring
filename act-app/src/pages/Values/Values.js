@@ -7,9 +7,11 @@ import Table from 'react-bootstrap/Table';
 import { useState, useEffect } from 'react';
 import NewValueForm from "../../components/NewValueForm/NewValueForm";
 import ValueModal from "../../components/ValueModal/ValueModal";
-import { getAllUserValues, addValue, deleteValue, getValue, updateValue } from "../../api/firestoreApi";
+import { getAllUserValues, addValue, deleteValue, getValue, updateValue, addValuesLog } from "../../api/firestoreApi";
 import { getCurrentUser }  from "../../api/auth";
 import Card from 'react-bootstrap/Card';
+import { RiDeleteBin5Line } from "react-icons/ri";
+import { BiEdit } from "react-icons/bi";
 
 function Values() {
 
@@ -64,15 +66,14 @@ function Values() {
     });
   }
 
-  const handleView = async (e) => {
-    const entryId = e.target.name;
+  const handleView = async (entryId) => { 
     setEditMode(false);
     getValueInfo(entryId);
+    addValuesLog("VALUE VIEWED");
     toggle();
   };
 
-  const handleDelete = async (e) => {
-    const entryId = e.target.name;
+  const handleDelete = async (entryId) => {
     deleteValue(entryId).then(response => {
       getValues();
     });
@@ -107,7 +108,7 @@ function Values() {
         toggleEditMode={toggleEditMode}
         handleUpdateValue={handleUpdateValue} 
       />
-      <Container fluid="md">
+      <Container fluid="md" className="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12">
       <Row className="mx-2 mt-5">
         <Col><h4 className="white-text">My values</h4></Col>
       </Row>
@@ -129,7 +130,7 @@ function Values() {
       </Row>
       <Row className="mx-2 mb-3">
         <Col>
-          <Table bordered>
+          <Table bordered size="sm">
             <thead>
               <tr>
                 <th>#</th>
@@ -145,10 +146,11 @@ function Values() {
                 return (
                   <tr key={entry.id}>
                     <td>{index+1}</td>
+                    {/* <td>{entry.id}</td> */}
                     <td>{entry.title}</td>
                     <td>{formatDate(entry.date.toDate())}</td>
-                    <td><Button name={entry.id} variant="primary" onClick={(handleView)}>View/Edit</Button></td>
-                    <td><Button name={entry.id} variant="danger" onClick={(handleDelete)}>Delete</Button></td>
+                    <td><Button name={entry.id} variant="primary" onClick={() => handleView(entry.id)}><BiEdit color="white" size="25px"/></Button></td>
+                    <td><Button name={entry.id} variant="danger" onClick={() => handleDelete(entry.id)}><RiDeleteBin5Line color="white" size="25px"/></Button></td>
                   </tr>
                 );
               })
